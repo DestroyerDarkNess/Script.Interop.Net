@@ -1,0 +1,10 @@
+c:\users\administrator\documents\visual studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\bin\Debug\Script.Interop.Net.pdb
+c:\users\administrator\documents\visual studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\bin\Debug\Script.Interop.Net.xml
+c:\users\administrator\documents\visual studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\obj\Debug\Script.Interop.Net.vbprojResolveAssemblyReference.cache
+c:\users\administrator\documents\visual studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\obj\Debug\Script.Interop.Net.Resources.resources
+c:\users\administrator\documents\visual studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\obj\Debug\Script.Interop.Net.vbproj.GenerateResource.Cache
+c:\users\administrator\documents\visual studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\obj\Debug\Script.Interop.Net.xml
+c:\users\administrator\documents\visual studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\obj\Debug\Script.Interop.Net.pdb
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\bin\Debug\Script.Interop.Net.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\bin\Debug\Script.Interop.Net.tlb
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Script.Interop.Net\Script.Interop.Net\obj\Debug\Script.Interop.Net.dll
