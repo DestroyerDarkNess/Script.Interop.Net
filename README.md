@@ -40,14 +40,12 @@ GOTO :SUCCESS
 :64bit
 ECHO "64 bit Operating System"
 ECHO "Registering Library"
-%regasm_x86% /codebase %LibPath%
+%regasm_x64% /codebase %LibPath%
 GOTO :SUCCESS
 
 :SUCCESS
 PAUSE
 EXIT 0
-
-
 
 ```
      
