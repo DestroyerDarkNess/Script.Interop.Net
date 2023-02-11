@@ -9,13 +9,13 @@ The objectives of the list that have: [❌] - It means I have no idea how to sol
 
 - [x] Import of .NET Framework or third-party libraries. made in .NET
 - [x] Find Classes and Objects
-- [x] Creation and storage of Instances [From VBS]
-- [x] Object Management [From VBS]
+- [x] Creation and storage of Instances [From script VBS/JS]
+- [x] Object Management [From script VBS/JS]
 - [ ] Event Handling  ❌ **[This is really necessary, but I can't figure out how to do it.]**
 - [ ] Shared/Static Methods are not supported ❌ **[I have to figure out a way to call it from .Net and parse the parameters supplied from the script.]**
-- [ ] Invent a way to make Callbacks from .NET to VBS Script. ❌ (or some socket-like system)
+- [ ] Invent a way to make Callbacks from .NET to VBS/JS Script. ❌ (or some socket-like system)
 - [ ] Create a Type Converter **[Based on the type 'string' , type conversions will be performed between interop.]**
-- [ ] Event Calling **[This is simpler, I can get the event pointer and launch ".Invoke" (vbs) or RaiseEvent from .NET]**
+- [ ] Event Calling **[This is simpler, I can get the event pointer and launch ".Invoke" (VBS/JS) or RaiseEvent from .NET]**
 - [ ] If you have any other ideas about a feature to implement, please make an Issue ✳️
 
 # How to use ?
