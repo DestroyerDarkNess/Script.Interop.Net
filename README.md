@@ -12,7 +12,7 @@ The objectives of the list that have: [❌] - It means I have no idea how to sol
 - [x] Creation and storage of Instances [From script VBS/JS]
 - [x] Object Management [From script VBS/JS]
 - [ ] Event Handling  ❌ **[This is really necessary, but I can't figure out how to do it.]**
-- [ ] Shared/Static Methods are not supported ❌ **[I have to figure out a way to call it from .Net and parse the parameters supplied from the script.]**
+- [x] Static methods supported. **[Fixed]**
 - [ ] Invent a way to make Callbacks from .NET to VBS/JS Script. ❌ (or some socket-like system)
 - [ ] Create a Type Converter **[Based on the type 'string' , type conversions will be performed between interop.]**
 - [ ] Event Calling **[This is simpler, I can get the event pointer and launch ".Invoke" (VBS/JS) or RaiseEvent from .NET]**
