@@ -5,11 +5,17 @@
 
 # Features
 
+The objectives of the list that have: [❌] - It means I have no idea how to solve it.
+
 - [x] Import of .NET Framework or third-party libraries. made in .NET
 - [x] Find Classes and Objects
-- [x] Creation and storage of Instances [From VBS]
-- [x] Object Management [From VBS]
+- [x] Creation and storage of Instances [From script VBS/JS]
+- [x] Object Management [From script VBS/JS]
 - [ ] Event Handling  ❌ **[This is really necessary, but I can't figure out how to do it.]**
+- [x] Static methods supported. **[Fixed]**
+- [ ] Invent a way to make Callbacks from .NET to VBS/JS Script. ❌ (or some socket-like system)
+- [ ] Create a Type Converter **[Based on the type 'string' , type conversions will be performed between interop.]**
+- [ ] Event Calling **[This is simpler, I can get the event pointer and launch ".Invoke" (VBS/JS) or RaiseEvent from .NET]**
 - [ ] If you have any other ideas about a feature to implement, please make an Issue ✳️
 
 # How to use ?
