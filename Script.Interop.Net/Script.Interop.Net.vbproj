@@ -74,6 +74,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\FastArgumentParser.vb" />
     <Compile Include="Core\Library.vb" />
     <Compile Include="Linker.vb" />
     <Compile Include="Core\DotNetFrameworkLocator.vb" />
