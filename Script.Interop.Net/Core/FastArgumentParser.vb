@@ -84,8 +84,8 @@ Namespace Core
             While strEnum.MoveNext()
 
                 If strEnum.Current.StartsWith(ArgumentDelimiter) Then
-                    Dim GetArg As IArgument = GetArgCommand(strEnum.Current)
-                    LastArg = GetArg
+                    Dim GetArg As IArgument = Nothing ' GetArgCommand(strEnum.Current)
+                    ' LastArg = GetArg
 
                     If GetArg Is Nothing Then
                         Dim UnknownA As IArgument = New IArgument With {.Name = strEnum.Current, .Detected = True}
@@ -148,6 +148,7 @@ Namespace Core
                     Case "uint" : Return UInt32.Parse(Value.FirstOrDefault.ToString())
                     Case "long" : Return Int64.Parse(Value.FirstOrDefault.ToString())
                     Case "ulong" : Return UInt64.Parse(Value.FirstOrDefault.ToString())
+                    Case "int32" : Return Int32.Parse(Value.FirstOrDefault.ToString())
                     ' Case "int128" : Int128.Parse(Value.ToString())
                     ' Case "uint128" : UInt128.Parse(Value.ToString())
                     Case "float" : Return Single.Parse(Value.FirstOrDefault.ToString())

@@ -39,7 +39,6 @@ Public Class Linker
 
     Public Function GetAssembly(ByVal Name As String) As Library
         Try
-
             For Each InsOld As KeyValuePair(Of String, Library) In InstancesLoaded
                 If IO.Path.GetFileNameWithoutExtension(InsOld.Key) = IO.Path.GetFileNameWithoutExtension(Name) Then
                     Return InsOld.Value
@@ -73,6 +72,46 @@ Public Class Linker
             Return Nothing
         End Try
     End Function
+
+    Public Function GetByRoot(ByVal Name As String) As TypeWrapper
+        Dim RootNamespace As String = Name
+        Dim TypeName As String = String.Empty
+
+        If Name.Contains("!") = True Then
+            Dim NamType() As String = Name.Split("!")
+            RootNamespace = NamType(0)
+            TypeName = NamType(1)
+            Dim ObjectLib As Library = GetAssembly(RootNamespace)
+            Dim ObjectClass As TypeWrapper = ObjectLib.GetTypeByAssembly(TypeName)
+            Return ObjectClass
+        End If
+
+        Return Nothing
+    End Function
+
+    Public Function CreateByRoot(ByVal Name As String) As Object
+        Dim RootNamespace As String = Name
+        Dim TypeName As String = String.Empty
+
+        If Name.Contains("!") = True Then
+            Dim NamType() As String = Name.Split("!")
+            RootNamespace = NamType(0)
+            TypeName = NamType(1)
+            Dim ObjectLib As Library = GetAssembly(RootNamespace)
+            Dim ObjectClass As TypeWrapper = ObjectLib.GetTypeByAssembly(TypeName)
+            Return ObjectClass.CreateInstance
+
+        End If
+
+        Return Nothing
+    End Function
+
+    Public Function GetExam(ByRef Name As Object) As String
+        MsgBox("net " & Name)
+        Name += " holaperra"
+        Return Name
+    End Function
+
 
 #End Region
 

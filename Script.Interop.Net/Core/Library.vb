@@ -38,7 +38,7 @@ Public Class TypeWrapper
         End Get
     End Property
 
-    Public Property _Name As String = String.Empty
+    Private Property _Name As String = String.Empty
     Public Property Name As String
         Set(value As String)
             _Name = value
@@ -72,7 +72,17 @@ Public Class TypeWrapper
         End Try
     End Function
 
-    Public Function GetMethods(ByVal NameAndType As String) As Object
+    Public Function GetPropertyValue(ByVal Name As String) As PropertyWrapper
+        Dim ProWrapper As New PropertyWrapper
+        Dim PropertyEx As Object = _Instance.[GetType]().GetProperty(Name).GetValue(_Instance)
+
+        ProWrapper.Instance = _Instance
+        ProWrapper.PropertyVal = PropertyEx
+
+        Return ProWrapper
+    End Function
+
+    Public Function GetMethods(ByVal NameAndType As String) As MethodWrapper
         Dim MethodName As String = NameAndType
         Dim TypeName As String = String.Empty
 
@@ -105,12 +115,101 @@ Public Class TypeWrapper
         If MethodList.Count = 0 Then
             Return Nothing
         Else
-            Dim MethodWrapperEx As New MethodWrapper
+            Dim MethodWrapperEx As New MethodWrapper With {.Instance = _Instance}
             MethodWrapperEx.MethodDef = MethodList.ToList
             Return MethodWrapperEx
         End If
     End Function
 
+    Public Function HandleEvent(ByVal EventName As String) As EventTracer
+
+        If _Instance Is Nothing Then
+            Throw New Exception("You must create an Instance of this element. [Call CreateInstance()]")
+
+        Else
+
+            Dim test As EventTracer = New EventTracer With {.TypeDef = _Instance, .Name = EventName}
+            Dim method As Reflection.MethodInfo = GetType(EventTracer).GetMethod("WriteTrace")
+            test.Method = method
+            Dim eventInfo As Reflection.EventInfo = _Instance.[GetType]().GetEvent(EventName)
+            Dim handler As [Delegate] = [Delegate].CreateDelegate(eventInfo.EventHandlerType, test, method)
+            eventInfo.AddEventHandler(_Instance, handler)
+            Return test
+
+        End If
+        Return Nothing
+    End Function
+
+End Class
+
+Public Class EventTracer
+
+    Private Property _Name As String = String.Empty
+    Public Property Name As String
+        Set(value As String)
+            _Name = value
+        End Set
+        Get
+            Return _Name
+        End Get
+    End Property
+
+    Public Property TypeDef As Object = Nothing
+    Public Property Method As Reflection.MethodInfo = Nothing
+    Private _IsCalled As Boolean = False
+
+    Public Sub WriteTrace(ByVal sender As Object, ByVal e As EventArgs)
+        _IsCalled = True
+        '  Console.WriteLine(sender.Name & " -> Trace !")
+    End Sub
+
+    Public Function IsCalled() As Boolean
+        If _IsCalled = True Then
+            _IsCalled = False
+            Return True
+        End If
+        Return False
+    End Function
+
+    Public Sub InvokeCall()
+        Method.Invoke(TypeDef, Nothing)
+    End Sub
+
+End Class
+
+Public Class PropertyWrapper
+
+    Public Property Instance As Object = Nothing
+    Public Property PropertyVal As Object = Nothing
+
+    Public Function GetMethod(ByVal Name As String) As MethodEx
+        Dim Method As New MethodEx With {.Instance = PropertyVal}
+        Dim addMethod As Reflection.MethodInfo = PropertyVal.[GetType]().GetMethods().Where(Function(m) m.Name = Name AndAlso m.GetParameters().Count() = 1).FirstOrDefault()
+        Method.MethodEx = addMethod
+        Return Method
+    End Function
+
+    'Public Function SetValue(ByVal Parameters As Object) As MethodEx
+    '    Dim CommandLineArgs As String() = Parameters.Split(" ")
+    '    Dim FastArgumentParser As Core.FastArgumentParser = New Core.FastArgumentParser()
+    '    FastArgumentParser.Parse(CommandLineArgs)
+
+    'End Function
+
+End Class
+
+Public Class MethodEx
+
+    Public Property Instance As Object = Nothing
+    Public Property MethodEx As Reflection.MethodInfo = Nothing
+
+    Public Function InvokeCall(Optional ByVal Parameters As Object = Nothing)
+        MethodEx.Invoke(Instance, New Object() {Parameters})
+    End Function
+
+    Public Function InvokeArrayCall(Optional ByVal Parameters As Object() = Nothing)
+        Return MethodEx.Invoke(Instance, Parameters)
+    End Function
 
 End Class
 
@@ -118,8 +217,22 @@ Public Class MethodWrapper
 
     Public Property MethodDef As List(Of Reflection.MethodInfo) = Nothing
 
-    Public Function InvokeCall(Optional ByVal Parameters As String = "") As Object
+    Public Property Instance As Object = Nothing
 
+    Private Property _Delimiter As String = " "
+    Public Property Delimiter As String
+        Set(value As String)
+            _Delimiter = value
+        End Set
+        Get
+            Return _Delimiter
+        End Get
+    End Property
+
+
+
+    Public Function InvokeCall(Optional ByVal Parameters As String = "") As Object
+        ' Console.Clear()
         Dim FastArgumentParser As Core.FastArgumentParser = New Core.FastArgumentParser()
         Dim ResultEx As Object = Nothing
 
@@ -127,7 +240,7 @@ Public Class MethodWrapper
 
             For Each Method As Reflection.MethodInfo In _MethodDef
                 If Method.GetParameters().Count = 0 Then
-                    ResultEx = Method.Invoke(Nothing, Nothing)
+                    ResultEx = Method.Invoke(Instance, Nothing)
                     Exit For
                 End If
             Next
@@ -136,13 +249,15 @@ Public Class MethodWrapper
 
             Dim CommandLineArgs As String() = Parameters.Split(" ")
 
-            FastArgumentParser.Parse(CommandLineArgs)
+            FastArgumentParser.Parse(CommandLineArgs, _Delimiter)
 
             Dim ArgumentArray As New Dictionary(Of Integer, List(Of Object))
 
+            ' Console.WriteLine("Dic Count : " & _MethodDef.Count)
+
             For MethodEx As Integer = 0 To (_MethodDef.Count - 1)
 
-                ' Console.WriteLine("Processing : " & _MethodDef(MethodEx).Name)
+                'Console.WriteLine("Processing : " & _MethodDef(MethodEx).Name)
 
                 Dim Method As Reflection.MethodInfo = _MethodDef(MethodEx)
                 Dim IsFuntionValid As Boolean = False
@@ -155,7 +270,7 @@ Public Class MethodWrapper
                 End If
 
                 If IsFuntionValid = False Then
-                    Exit For
+                    Continue For
                 End If
 
                 ' Console.WriteLine("IsValid : " & IsFuntionValid & vbNewLine & vbNewLine)
@@ -173,7 +288,7 @@ Public Class MethodWrapper
                         ' Console.WriteLine(String.Equals(Param.ParameterType.Name, ArgParsed.Name.Substring(1, ArgParsed.Name.Length - 1), StringComparison.OrdinalIgnoreCase))
 
                         If String.Equals(Param.ParameterType.Name, ArgParsed.Name.Substring(1, ArgParsed.Name.Length - 1), StringComparison.OrdinalIgnoreCase) Then
-
+                            '  Console.WriteLine("Valid2 :")
                             If ArgParsed.Value Is Nothing Then
                                 ' Console.WriteLine("Value : Is Nothing")
                                 If Param.IsOptional Then
@@ -183,12 +298,13 @@ Public Class MethodWrapper
                                     Exit For
                                 End If
                             Else
-                                '  Console.WriteLine("Adding : ")
+                                ' Console.WriteLine("Adding : ")
                                 Dim CtypeEx As Object = ArgParsed.ConvertType
                                 ParamEx.Add(CtypeEx)
                             End If
 
                         Else
+                            '    Console.WriteLine("Invalid :")
                             ParamEx.Clear()
                             Exit For
                         End If
@@ -205,11 +321,11 @@ Public Class MethodWrapper
                 End If
 
             Next
-            '  Console.WriteLine("ArgumentArray Count : " & ArgumentArray.Count)
+            '    Console.WriteLine("ArgumentArray Count : " & ArgumentArray.Count)
             If Not ArgumentArray.Count = 0 Then
                 Dim Index As Integer = ArgumentArray.FirstOrDefault.Key
-                ResultEx = _MethodDef(Index).Invoke(Nothing, ArgumentArray.FirstOrDefault.Value.ToArray)
-                '   Console.WriteLine("Result  : " & ResultEx)
+                ResultEx = _MethodDef(Index).Invoke(Instance, ArgumentArray.FirstOrDefault.Value.ToArray)
+                '  Console.WriteLine("Result  : " & ResultEx)
             End If
 
         End If

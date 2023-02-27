@@ -1,0 +1,3 @@
+Hello World!
+
+Called By Script.Interop.Net {Power By S4lsalsoft}
